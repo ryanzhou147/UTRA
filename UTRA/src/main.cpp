@@ -1,34 +1,37 @@
-// Revised Mapping
-const int IN1 = 9;  // Motor A - PWM
-const int IN2 = 10; // Motor A - PWM
-const int IN3 = 6;  // Motor B - PWM
-const int IN4 = 5;  // Motor B - PWM
+
+#include <Arduino.h>
+
+// New Mapping based on your move
+const int IN1 = 9;  
+const int IN2 = 10; 
+const int IN3 = 6;  
+const int IN4 = 5;  
 
 void setup() {
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
-  
   Serial.begin(9600);
-  // This will show up in your Bridge Server logs later!
-  Serial.println("UTRA: Motors Initialized on PWM Pins"); 
 }
 
-// Simple test: Full speed forward
-void loop() {
-  // Motor A Forward
-  analogWrite(IN1, 255); 
-  digitalWrite(IN2, LOW);
+void stopAll() {
+  digitalWrite(IN1, LOW); digitalWrite(IN2, LOW);
+  digitalWrite(IN3, LOW); digitalWrite(IN4, LOW);
+}
 
-  // Motor B Forward
-  analogWrite(IN3, 255);
-  digitalWrite(IN4, LOW);
-  
+void loop() {
+  // TEST 1: ONLY LEFT (Motor A)
+  Serial.println("Testing LEFT only...");
+  digitalWrite(IN1, HIGH); 
   delay(2000);
-  
-  // Stop All
-  digitalWrite(IN1, LOW);
-  digitalWrite(IN3, LOW);
+  stopAll();
+  delay(1000);
+
+  // TEST 2: ONLY RIGHT (Motor B)
+  Serial.println("Testing RIGHT only...");
+  digitalWrite(IN3, HIGH); 
+  delay(2000);
+  stopAll();
   delay(1000);
 }
