@@ -328,9 +328,9 @@ UTRA/
 │   │   ├── AchievementCard.tsx
 │   │   └── MintButton.tsx
 │   └── lib/
-│       ├── mongodb.ts
-│       ├── solana.ts
-│       ├── hash.ts
+│       ├── mongodb.ts         # Connection + collection types (IMPLEMENTED)
+│       ├── solana.ts          # localStorage hash storage (IMPLEMENTED)
+│       ├── config.ts          # App config + Snowflake placeholder (IMPLEMENTED)
 │       └── achievements.ts    # Achievement checking logic
 │
 └── context.md
@@ -403,13 +403,50 @@ SERIAL_PORT=/dev/tty.usbmodem14101
 BAUD_RATE=9600
 ```
 
-**webapp/.env.local:**
+**webapp/.env.local:** (see `.env.example`)
 ```
+# MongoDB
 MONGODB_URI=mongodb+srv://...
+MONGODB_DB=utra
+
+# Solana
 SOLANA_RPC=https://api.devnet.solana.com
+SOLANA_NETWORK=devnet
 INTEGRITY_PROGRAM_ID=<deployed_program_id>
 BADGES_PROGRAM_ID=<deployed_program_id>
-ADMIN_WALLET_SECRET=<base58_keypair>  # For signing verify txs
+ADMIN_WALLET_SECRET=<base58_keypair>
+
+# Snowflake (future analytics)
+SNOWFLAKE_ACCOUNT=
+SNOWFLAKE_USERNAME=
+SNOWFLAKE_DATABASE=UTRA_ANALYTICS
+SNOWFLAKE_ENABLED=false
+
+# Feature Flags
+USE_MOCK_DATA=true
+ENABLE_NFT_MINTING=false
+ENABLE_SOLANA_VERIFICATION=false
+```
+
+## Local Hash Storage
+
+Before MongoDB is connected, Solana verification hashes are stored in **localStorage**:
+
+```typescript
+// lib/solana.ts
+interface StoredHash {
+  runId: string;
+  hash: string;        // SHA-256 of run data
+  timestamp: number;
+  verified: boolean;
+  txSignature?: string;
+}
+
+// Functions available:
+storeHash(runId, hash, txSignature?)
+getHashForRun(runId)
+markHashVerified(runId, txSignature)
+exportHashesForSync()  // For migration to MongoDB
 ```
 
 ## Media Upload Strategy
@@ -435,18 +472,18 @@ evidence: {
 }
 ```
 
-## UI Theme: Terminal Aesthetic
+## UI Theme: Chalk Terminal
 
-Using **react-terminal-ui** for a retro terminal look that fits the robotics/hackathon vibe.
+Professional chalk terminal aesthetic - soft, muted colors inspired by Catppuccin.
 
 ### Design Direction
-- Dark background (#0d0d0d or #1a1a1a)
-- Green/amber phosphor text (#00ff00, #ffb000)
-- Monospace font (JetBrains Mono / Fira Code)
-- CRT scanline effect (subtle CSS)
-- `>_` blinking cursor
-- Typing animations for live data
-- ASCII art headers and dividers
+- Slate background (#1e1e2e, #282839)
+- Muted purple accents (#cba6f7, #b4befe)
+- Soft text colors (#cdd6f4, #a6adc8, #6c7086)
+- Pastel status colors (green #a6e3a1, peach #fab387, red #f38ba8, blue #89b4fa)
+- Monospace font (JetBrains Mono)
+- Subtle scanline effect
+- Rounded corners throughout
 
 ### Terminal UI Elements
 ```
@@ -516,9 +553,11 @@ npm run dev
 
 | Route | Description |
 |-------|-------------|
-| `/` | Live terminal logs - shows sensor telemetry in real-time |
+| `/` | Sensor dashboard - ultrasonic + color detection charts |
 | `/runs` | Run history with video replay - click [+ ADD RUN] to add |
-| `/achievements` | Badge checklist - shows unlocked/locked achievements |
+| `/achievements` | Badge grid - shows which teams earned each achievement |
+| `/collection` | NFT storefront - browse minted badges by rarity |
+| `/mint` | Mint new NFTs - connect wallet and upload image |
 
 ### Adding a Run
 1. Go to `/runs`
@@ -632,3 +671,26 @@ interface ColorStats {
 - Stability = 100 - (coefficient of variation * 100), capped at 0-100%
 - Rolling window of ~50 readings for stability calculation
 - Color bar graph should update in real-time as new colors are detected
+
+---
+
+## Current Implementation Status
+
+### Completed
+- [x] Next.js webapp with chalk terminal theme
+- [x] Sensor dashboard with ultrasonic + color detection charts
+- [x] Runs page with team selection and video upload
+- [x] Achievements page showing which teams earned badges
+- [x] NFT collection/storefront page with rarity filtering
+- [x] NFT minting page with Solana wallet integration
+- [x] MongoDB scaffolding (`lib/mongodb.ts`) with all collection types
+- [x] localStorage hash storage (`lib/solana.ts`) for offline verification
+- [x] Config system (`lib/config.ts`) with Snowflake placeholder
+- [x] Mock data for 5 teams, 8 runs, 8 NFTs
+
+### Pending
+- [ ] Connect MongoDB (copy `.env.example` to `.env.local`)
+- [ ] API routes for CRUD operations
+- [ ] Bridge server for Arduino serial
+- [ ] Solana Anchor programs
+- [ ] Snowflake analytics integration
