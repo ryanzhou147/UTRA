@@ -77,28 +77,28 @@ export default function MintPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="mb-4 text-[#00ff00]/50 text-sm">{">"} NFT MINT STATION</div>
+      <div className="mb-6 text-[#6c7086] text-sm">{">"} NFT MINT STATION</div>
 
       <div className="grid md:grid-cols-2 gap-4">
         {/* Mint Form */}
-        <div className="terminal-box p-4">
-          <div className="text-[#ffb000] mb-4">{">"} WALLET STATUS</div>
+        <div className="terminal-box p-5">
+          <div className="text-[#cba6f7] mb-4 font-medium">WALLET STATUS</div>
 
           <div className="mb-4">
-            <WalletMultiButton className="!bg-[#00ff00]/20 !border !border-[#00ff00] !text-[#00ff00] hover:!bg-[#00ff00]/30 !font-mono !text-sm !h-auto !py-2" />
+            <WalletMultiButton className="!bg-[#313145] !border !border-[#45475a] !text-[#cdd6f4] hover:!bg-[#45475a] !font-mono !text-sm !h-auto !py-2 !rounded" />
           </div>
 
           {connected && publicKey && (
-            <div className="text-xs text-[#00ff00]/50 mb-4 break-all">
+            <div className="text-xs text-[#6c7086] mb-4 break-all">
               Connected: {publicKey.toString()}
             </div>
           )}
 
-          <div className="text-[#ffb000] mb-3 mt-6">{">"} CREATE NFT</div>
+          <div className="text-[#cba6f7] mb-4 mt-6 font-medium">CREATE NFT</div>
 
           <div className="space-y-4">
             <div>
-              <label className="text-[#00ff00]/50 text-xs block mb-1">IMAGE</label>
+              <label className="text-[#6c7086] text-xs block mb-2">IMAGE</label>
               <DragDropZone
                 accept={["image/*"]}
                 onFile={handleImageFile}
@@ -110,22 +110,22 @@ export default function MintPage() {
             </div>
 
             <div>
-              <label className="text-[#00ff00]/50 text-xs block mb-1">NAME</label>
+              <label className="text-[#6c7086] text-xs block mb-2">NAME</label>
               <input
                 type="text"
                 value={nftName}
                 onChange={(e) => setNftName(e.target.value)}
-                className="w-full bg-black border border-[#00ff00]/30 p-2 text-[#00ff00] text-sm"
+                className="w-full bg-[#1e1e2e] border border-[#45475a] p-2 text-[#cdd6f4] text-sm rounded focus:border-[#cba6f7] outline-none transition-colors"
                 placeholder="UTRA Achievement #1"
               />
             </div>
 
             <div>
-              <label className="text-[#00ff00]/50 text-xs block mb-1">DESCRIPTION</label>
+              <label className="text-[#6c7086] text-xs block mb-2">DESCRIPTION</label>
               <textarea
                 value={nftDescription}
                 onChange={(e) => setNftDescription(e.target.value)}
-                className="w-full bg-black border border-[#00ff00]/30 p-2 text-[#00ff00] text-sm h-20 resize-none"
+                className="w-full bg-[#1e1e2e] border border-[#45475a] p-2 text-[#cdd6f4] text-sm h-20 resize-none rounded focus:border-[#cba6f7] outline-none transition-colors"
                 placeholder="Achievement unlocked for..."
               />
             </div>
@@ -133,10 +133,10 @@ export default function MintPage() {
             <button
               onClick={handleMint}
               disabled={!connected || !imageFile || !nftName || isMinting}
-              className={`w-full border px-4 py-3 text-sm transition-all ${
+              className={`w-full border px-4 py-3 text-sm transition-all rounded ${
                 !connected || !imageFile || !nftName || isMinting
-                  ? "bg-[#00ff00]/5 border-[#00ff00]/20 text-[#00ff00]/30 cursor-not-allowed"
-                  : "bg-[#ffb000]/20 border-[#ffb000] text-[#ffb000] hover:bg-[#ffb000]/30"
+                  ? "bg-[#1e1e2e] border-[#45475a] text-[#6c7086] cursor-not-allowed"
+                  : "bg-[#313145] border-[#cba6f7] text-[#cba6f7] hover:bg-[#45475a]"
               }`}
             >
               {isMinting ? "[MINTING...]" : "[MINT NFT]"}
@@ -144,18 +144,18 @@ export default function MintPage() {
 
             {mintStatus && (
               <div className="terminal-box p-3 text-xs">
-                <div className="text-[#ffb000] animate-pulse">{">"} {mintStatus}</div>
+                <div className="text-[#89b4fa] animate-pulse">{">"} {mintStatus}</div>
               </div>
             )}
           </div>
         </div>
 
         {/* Minted NFTs */}
-        <div className="terminal-box p-4">
-          <div className="text-[#ffb000] mb-4">{">"} MINTED NFTS [{mintedNFTs.length}]</div>
+        <div className="terminal-box p-5">
+          <div className="text-[#cba6f7] mb-4 font-medium">MINTED NFTS [{mintedNFTs.length}]</div>
 
           {mintedNFTs.length === 0 ? (
-            <div className="h-[400px] flex items-center justify-center text-[#00ff00]/30 text-sm">
+            <div className="h-[400px] flex items-center justify-center text-[#6c7086] text-sm">
               <pre>
 {`  ┌─────────────┐
   │  NO NFTS    │
@@ -167,15 +167,15 @@ export default function MintPage() {
           ) : (
             <div className="space-y-3 max-h-[500px] overflow-y-auto">
               {mintedNFTs.map((nft) => (
-                <div key={nft.id} className="border border-[#00ff00]/20 p-3">
+                <div key={nft.id} className="border border-[#45475a] p-3 rounded">
                   <div className="flex gap-3">
-                    <div className="w-16 h-16 border border-[#00ff00]/30 flex-shrink-0">
+                    <div className="w-16 h-16 border border-[#45475a] flex-shrink-0 rounded overflow-hidden">
                       <img src={nft.imageUrl} alt={nft.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[#ffb000] text-sm truncate">{nft.name}</div>
-                      <div className="text-[#00ff00]/50 text-xs mt-1">{nft.timestamp}</div>
-                      <div className="text-[#00ff00]/30 text-xs mt-1 truncate">
+                      <div className="text-[#cba6f7] text-sm truncate">{nft.name}</div>
+                      <div className="text-[#6c7086] text-xs mt-1">{nft.timestamp}</div>
+                      <div className="text-[#6c7086] text-xs mt-1 truncate">
                         Mint: {nft.mintAddress}
                       </div>
                     </div>
@@ -185,7 +185,7 @@ export default function MintPage() {
             </div>
           )}
 
-          <div className="mt-4 pt-4 border-t border-[#00ff00]/20 text-xs text-[#00ff00]/40">
+          <div className="mt-4 pt-4 border-t border-[#45475a] text-xs text-[#6c7086]">
             <div>{">"} Network: Solana Devnet</div>
             <div>{">"} Standard: Metaplex NFT</div>
           </div>

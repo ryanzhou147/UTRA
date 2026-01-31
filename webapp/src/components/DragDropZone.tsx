@@ -80,33 +80,33 @@ export default function DragDropZone({
       onDragOver={handleDrag}
       onDrop={handleDrop}
       className={`
-        border-2 border-dashed cursor-pointer transition-all
-        ${isDragging ? "border-[#ffb000] bg-[#ffb000]/10" : "border-[#00ff00]/30 hover:border-[#00ff00]/50"}
+        border-2 border-dashed cursor-pointer transition-all rounded-lg
+        ${isDragging ? "border-[#cba6f7] bg-[#cba6f7]/10" : "border-[#45475a] hover:border-[#6c7086]"}
         ${className}
       `}
     >
       {preview ? (
         <div className="relative w-full h-full">
           {accept.some((t) => t.startsWith("video/")) ? (
-            <video src={preview} className="w-full h-full object-contain" controls />
+            <video src={preview} className="w-full h-full object-contain rounded-lg" controls />
           ) : (
-            <img src={preview} alt="Preview" className="w-full h-full object-contain" />
+            <img src={preview} alt="Preview" className="w-full h-full object-contain rounded-lg" />
           )}
-          <div className="absolute bottom-2 right-2 text-xs text-[#00ff00]/50">
+          <div className="absolute bottom-2 right-2 text-xs text-[#6c7086] bg-[#1e1e2e]/80 px-2 py-1 rounded">
             [DROP TO REPLACE]
           </div>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center h-full p-4 text-center">
-          <div className="text-[#00ff00]/70 mb-2">
+          <div className="text-[#6c7086] mb-2">
             <pre className="text-2xl">
 {`  ┌───┐
   │ ↓ │
   └───┘`}
             </pre>
           </div>
-          <div className="text-[#00ff00] text-sm">{label}</div>
-          {sublabel && <div className="text-[#00ff00]/40 text-xs mt-1">{sublabel}</div>}
+          <div className="text-[#a6adc8] text-sm">{label}</div>
+          {sublabel && <div className="text-[#6c7086] text-xs mt-1">{sublabel}</div>}
         </div>
       )}
     </div>

@@ -38,10 +38,10 @@ interface LogEntry {
 // Constants
 const READING_WINDOW = 50;
 const COLOR_BAR_COLORS: Record<DetectedColor, string> = {
-  red: "#ff4444",
-  green: "#00ff00",
-  blue: "#4488ff",
-  black: "#888888",
+  red: "#f38ba8",
+  green: "#a6e3a1",
+  blue: "#89b4fa",
+  black: "#6c7086",
 };
 
 const initialLogs: LogEntry[] = [
@@ -144,15 +144,15 @@ export default function SensorDashboard() {
   const getLogColor = (type: string) => {
     switch (type) {
       case "warn":
-        return "text-[#ffb000]";
+        return "text-[#fab387]";
       case "error":
-        return "text-red-500";
+        return "text-[#f38ba8]";
       case "data":
-        return "text-[#00ff00]/70";
+        return "text-[#a6adc8]";
       case "color":
-        return "text-[#4488ff]";
+        return "text-[#89b4fa]";
       default:
-        return "text-[#00ff00]";
+        return "text-[#cdd6f4]";
     }
   };
 
@@ -176,48 +176,48 @@ export default function SensorDashboard() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="mb-4 text-[#00ff00]/50 text-sm">
-        {">"} UTRA SENSOR DASHBOARD
+      <div className="mb-6 text-[#6c7086] text-sm">
+        {">"} SENSOR DASHBOARD
       </div>
 
       {/* Top Row: Sensor Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {/* Ultrasonic Card */}
-        <div className="terminal-box p-4">
-          <div className="text-[#ffb000] text-xs mb-3">[ULTRASONIC]</div>
+        <div className="terminal-box p-5">
+          <div className="text-[#cba6f7] text-xs mb-4 font-medium">ULTRASONIC</div>
           <div className="flex justify-between items-center">
             <div>
-              <div className="text-3xl font-bold tabular-nums">
+              <div className="text-3xl font-bold tabular-nums text-[#cdd6f4]">
                 {currentDistance.toFixed(1)}
-                <span className="text-lg text-[#00ff00]/50">cm</span>
+                <span className="text-lg text-[#6c7086] ml-1">cm</span>
               </div>
-              <div className="text-xs text-[#00ff00]/50 mt-1">
+              <div className="text-xs text-[#6c7086] mt-1">
                 Distance Reading
               </div>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold tabular-nums">
+              <div className="text-2xl font-bold tabular-nums text-[#cdd6f4]">
                 {stability.toFixed(1)}
-                <span className="text-lg text-[#00ff00]/50">%</span>
+                <span className="text-lg text-[#6c7086] ml-1">%</span>
               </div>
-              <div className="text-xs text-[#00ff00]/50 mt-1">
+              <div className="text-xs text-[#6c7086] mt-1">
                 Stability
               </div>
             </div>
           </div>
           {/* Stability Bar */}
-          <div className="mt-3">
-            <div className="h-2 bg-[#001a00] rounded-full overflow-hidden">
+          <div className="mt-4">
+            <div className="h-2 bg-[#1e1e2e] rounded-full overflow-hidden">
               <div
-                className="h-full transition-all duration-300"
+                className="h-full transition-all duration-300 rounded-full"
                 style={{
                   width: `${stability}%`,
                   backgroundColor:
                     stability > 80
-                      ? "#00ff00"
+                      ? "#a6e3a1"
                       : stability > 50
-                        ? "#ffb000"
-                        : "#ff4444",
+                        ? "#fab387"
+                        : "#f38ba8",
                 }}
               />
             </div>
@@ -225,28 +225,28 @@ export default function SensorDashboard() {
         </div>
 
         {/* Color Detection Card */}
-        <div className="terminal-box p-4">
-          <div className="text-[#ffb000] text-xs mb-3">[COLOR DETECTION]</div>
+        <div className="terminal-box p-5">
+          <div className="text-[#cba6f7] text-xs mb-4 font-medium">COLOR DETECTION</div>
           <div className="flex justify-between items-center">
             <div>
-              <div className="text-xs text-[#00ff00]/50 mb-1">Current:</div>
-              <div className="flex items-center gap-2">
+              <div className="text-xs text-[#6c7086] mb-2">Current</div>
+              <div className="flex items-center gap-3">
                 <div
-                  className="w-8 h-8 rounded border border-[#00ff00]/30"
+                  className="w-10 h-10 rounded-lg border border-[#45475a]"
                   style={{
                     backgroundColor: colorStats.currentColor
                       ? COLOR_BAR_COLORS[colorStats.currentColor]
-                      : "#333",
+                      : "#313145",
                   }}
                 />
-                <span className="text-xl font-bold uppercase">
+                <span className="text-xl font-bold uppercase text-[#cdd6f4]">
                   {colorStats.currentColor || "---"}
                 </span>
               </div>
             </div>
             <div className="text-right">
-              <div className="text-xs text-[#00ff00]/50 mb-1">Total Detections:</div>
-              <div className="text-2xl font-bold tabular-nums">
+              <div className="text-xs text-[#6c7086] mb-2">Total Detections</div>
+              <div className="text-2xl font-bold tabular-nums text-[#cdd6f4]">
                 {colorStats.total}
               </div>
             </div>
@@ -257,30 +257,30 @@ export default function SensorDashboard() {
       {/* Middle Row: Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {/* Distance Line Chart */}
-        <div className="terminal-box p-4">
-          <div className="text-[#ffb000] text-xs mb-3">[DISTANCE OVER TIME]</div>
+        <div className="terminal-box p-5">
+          <div className="text-[#cba6f7] text-xs mb-4 font-medium">DISTANCE OVER TIME</div>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <XAxis
                   dataKey="index"
-                  stroke="#00ff00"
-                  strokeOpacity={0.3}
-                  tick={{ fill: "#00ff00", fontSize: 10, opacity: 0.5 }}
-                  tickLine={{ stroke: "#00ff00", strokeOpacity: 0.3 }}
+                  stroke="#45475a"
+                  tick={{ fill: "#6c7086", fontSize: 10 }}
+                  tickLine={{ stroke: "#45475a" }}
+                  axisLine={{ stroke: "#45475a" }}
                 />
                 <YAxis
                   domain={[0, 100]}
-                  stroke="#00ff00"
-                  strokeOpacity={0.3}
-                  tick={{ fill: "#00ff00", fontSize: 10, opacity: 0.5 }}
-                  tickLine={{ stroke: "#00ff00", strokeOpacity: 0.3 }}
+                  stroke="#45475a"
+                  tick={{ fill: "#6c7086", fontSize: 10 }}
+                  tickLine={{ stroke: "#45475a" }}
+                  axisLine={{ stroke: "#45475a" }}
                   width={35}
                 />
                 <Line
                   type="monotone"
                   dataKey="distance"
-                  stroke="#00ff00"
+                  stroke="#b4befe"
                   strokeWidth={2}
                   dot={false}
                   isAnimationActive={false}
@@ -291,28 +291,28 @@ export default function SensorDashboard() {
         </div>
 
         {/* Color Bar Chart */}
-        <div className="terminal-box p-4">
-          <div className="text-[#ffb000] text-xs mb-3">[COLOR BAR GRAPH]</div>
+        <div className="terminal-box p-5">
+          <div className="text-[#cba6f7] text-xs mb-4 font-medium">COLOR DISTRIBUTION</div>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={colorBarData} layout="vertical">
                 <XAxis
                   type="number"
-                  stroke="#00ff00"
-                  strokeOpacity={0.3}
-                  tick={{ fill: "#00ff00", fontSize: 10, opacity: 0.5 }}
-                  tickLine={{ stroke: "#00ff00", strokeOpacity: 0.3 }}
+                  stroke="#45475a"
+                  tick={{ fill: "#6c7086", fontSize: 10 }}
+                  tickLine={{ stroke: "#45475a" }}
+                  axisLine={{ stroke: "#45475a" }}
                 />
                 <YAxis
                   type="category"
                   dataKey="name"
-                  stroke="#00ff00"
-                  strokeOpacity={0.3}
-                  tick={{ fill: "#00ff00", fontSize: 12, opacity: 0.7 }}
-                  tickLine={{ stroke: "#00ff00", strokeOpacity: 0.3 }}
+                  stroke="#45475a"
+                  tick={{ fill: "#a6adc8", fontSize: 12 }}
+                  tickLine={{ stroke: "#45475a" }}
+                  axisLine={{ stroke: "#45475a" }}
                   width={25}
                 />
-                <Bar dataKey="count" isAnimationActive={false}>
+                <Bar dataKey="count" isAnimationActive={false} radius={[0, 4, 4, 0]}>
                   {colorBarData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLOR_BAR_COLORS[entry.color]} />
                   ))}
@@ -321,14 +321,14 @@ export default function SensorDashboard() {
             </ResponsiveContainer>
           </div>
           {/* Color Legend with counts */}
-          <div className="flex justify-around mt-2 text-xs">
+          <div className="flex justify-around mt-3 text-xs">
             {colorBarData.map((c) => (
-              <div key={c.name} className="flex items-center gap-1">
+              <div key={c.name} className="flex items-center gap-2">
                 <div
-                  className="w-3 h-3 rounded-sm"
+                  className="w-3 h-3 rounded"
                   style={{ backgroundColor: COLOR_BAR_COLORS[c.color] }}
                 />
-                <span className="text-[#00ff00]/70 tabular-nums">{c.count}</span>
+                <span className="text-[#a6adc8] tabular-nums">{c.count}</span>
               </div>
             ))}
           </div>
@@ -336,26 +336,26 @@ export default function SensorDashboard() {
       </div>
 
       {/* Bottom: Terminal Log */}
-      <div className="terminal-box p-4">
-        <div className="text-[#ffb000] text-xs mb-3">[TERMINAL LOG]</div>
-        <div className="h-48 overflow-y-auto text-sm">
+      <div className="terminal-box p-5">
+        <div className="text-[#cba6f7] text-xs mb-4 font-medium">TERMINAL LOG</div>
+        <div className="h-48 overflow-y-auto text-sm font-mono">
           {logs.map((log, i) => (
             <div key={i} className={`${getLogColor(log.type)} mb-1`}>
-              <span className="text-[#00ff00]/40 mr-2 tabular-nums">
+              <span className="text-[#6c7086] mr-3 tabular-nums">
                 {formatTime(log.t)}
               </span>
               {log.msg}
             </div>
           ))}
           <div ref={endRef} />
-          <div className="flex items-center mt-2">
-            <span className="text-[#00ff00]/50 mr-2">root@utra:~$</span>
-            <span className="blink">_</span>
+          <div className="flex items-center mt-3">
+            <span className="text-[#6c7086] mr-2">user@utra:~$</span>
+            <span className="blink text-[#cba6f7]">_</span>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 text-xs text-[#00ff00]/40">
+      <div className="mt-4 text-xs text-[#6c7086]">
         Connected to /dev/tty.usbmodem14101 @ 9600 baud
       </div>
     </div>

@@ -67,11 +67,11 @@ export default function RunsPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="flex justify-between items-center mb-4">
-        <div className="text-[#00ff00]/50 text-sm">{">"} RUN HISTORY</div>
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-[#6c7086] text-sm">{">"} RUN HISTORY</div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="text-[#ffb000] text-sm hover:text-[#ffb000]/80"
+          className="text-[#cba6f7] text-sm hover:text-[#b4befe] transition-colors"
         >
           [{showForm ? "CANCEL" : "+ ADD RUN"}]
         </button>
@@ -79,32 +79,32 @@ export default function RunsPage() {
 
       {/* Add Form */}
       {showForm && (
-        <div className="terminal-box p-4 mb-4 text-sm">
-          <div className="text-[#ffb000] mb-3">{">"} NEW RUN</div>
+        <div className="terminal-box p-5 mb-4 text-sm">
+          <div className="text-[#cba6f7] mb-4 font-medium">NEW RUN</div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-[#00ff00]/50 text-xs block mb-1">SECTION</label>
+              <label className="text-[#6c7086] text-xs block mb-2">SECTION</label>
               <select
                 value={section}
                 onChange={(e) => setSection(e.target.value as "target" | "obstacle")}
-                className="w-full bg-black border border-[#00ff00]/30 p-2 text-[#00ff00]"
+                className="w-full bg-[#1e1e2e] border border-[#45475a] p-2 text-[#cdd6f4] rounded focus:border-[#cba6f7] outline-none transition-colors"
               >
                 <option value="target">target</option>
                 <option value="obstacle">obstacle</option>
               </select>
             </div>
             <div>
-              <label className="text-[#00ff00]/50 text-xs block mb-1">SCORE</label>
+              <label className="text-[#6c7086] text-xs block mb-2">SCORE</label>
               <input
                 type="number"
                 value={score}
                 onChange={(e) => setScore(e.target.value)}
-                className="w-full bg-black border border-[#00ff00]/30 p-2 text-[#00ff00]"
+                className="w-full bg-[#1e1e2e] border border-[#45475a] p-2 text-[#cdd6f4] rounded focus:border-[#cba6f7] outline-none transition-colors"
                 placeholder="0"
               />
             </div>
             <div className="col-span-2">
-              <label className="text-[#00ff00]/50 text-xs block mb-1">VIDEO FILE</label>
+              <label className="text-[#6c7086] text-xs block mb-2">VIDEO FILE</label>
               <DragDropZone
                 accept={["video/*"]}
                 onFile={handleVideoFile}
@@ -117,7 +117,7 @@ export default function RunsPage() {
             <div className="col-span-2">
               <button
                 onClick={handleAdd}
-                className="bg-[#00ff00]/20 border border-[#00ff00] px-4 py-2 text-[#00ff00] hover:bg-[#00ff00]/30"
+                className="bg-[#313145] border border-[#cba6f7] px-4 py-2 text-[#cba6f7] hover:bg-[#45475a] rounded transition-colors"
               >
                 [SUBMIT]
               </button>
@@ -128,14 +128,14 @@ export default function RunsPage() {
 
       <div className="grid md:grid-cols-2 gap-4">
         {/* Run List */}
-        <div className="terminal-box p-4 h-[60vh] overflow-y-auto">
+        <div className="terminal-box p-5 h-[60vh] overflow-y-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-[#00ff00]/50 border-b border-[#00ff00]/20">
-                <th className="text-left py-2">ID</th>
-                <th className="text-left py-2">TYPE</th>
-                <th className="text-right py-2">SCORE</th>
-                <th className="text-right py-2">STATUS</th>
+              <tr className="text-[#6c7086] border-b border-[#45475a]">
+                <th className="text-left py-3">ID</th>
+                <th className="text-left py-3">TYPE</th>
+                <th className="text-right py-3">SCORE</th>
+                <th className="text-right py-3">STATUS</th>
               </tr>
             </thead>
             <tbody>
@@ -143,18 +143,18 @@ export default function RunsPage() {
                 <tr
                   key={run.id}
                   onClick={() => setSelected(run)}
-                  className={`border-b border-[#00ff00]/10 cursor-pointer hover:bg-[#00ff00]/5 ${
-                    selected?.id === run.id ? "bg-[#00ff00]/10" : ""
+                  className={`border-b border-[#45475a]/50 cursor-pointer hover:bg-[#313145] transition-colors ${
+                    selected?.id === run.id ? "bg-[#313145]" : ""
                   }`}
                 >
-                  <td className="py-2">{run.id}</td>
-                  <td className="py-2 text-[#ffb000]">{run.section}</td>
-                  <td className="py-2 text-right">{run.score}</td>
-                  <td className="py-2 text-right">
+                  <td className="py-3 text-[#cdd6f4]">{run.id}</td>
+                  <td className="py-3 text-[#89b4fa]">{run.section}</td>
+                  <td className="py-3 text-right text-[#cdd6f4] tabular-nums">{run.score}</td>
+                  <td className="py-3 text-right">
                     {run.verified ? (
-                      <span className="text-[#00ff00]">[OK]</span>
+                      <span className="text-[#a6e3a1]">[OK]</span>
                     ) : (
-                      <span className="text-[#ffb000]">[PENDING]</span>
+                      <span className="text-[#fab387]">[PENDING]</span>
                     )}
                   </td>
                 </tr>
@@ -164,39 +164,39 @@ export default function RunsPage() {
         </div>
 
         {/* Video Player */}
-        <div className="terminal-box p-4 h-[60vh]">
+        <div className="terminal-box p-5 h-[60vh]">
           {selected ? (
             <div className="h-full flex flex-col">
-              <div className="text-[#ffb000] mb-2">{"> "}{selected.id.toUpperCase()}</div>
-              <div className="text-sm text-[#00ff00]/70 mb-4">
-                <div>Section: {selected.section}</div>
-                <div>Score: {selected.score}</div>
-                <div>Time: {selected.timestamp}</div>
+              <div className="text-[#cba6f7] mb-3 font-medium">{selected.id.toUpperCase()}</div>
+              <div className="text-sm text-[#a6adc8] mb-4 space-y-1">
+                <div>Section: <span className="text-[#89b4fa]">{selected.section}</span></div>
+                <div>Score: <span className="text-[#cdd6f4]">{selected.score}</span></div>
+                <div>Time: <span className="text-[#6c7086]">{selected.timestamp}</span></div>
               </div>
               {selected.videoUrl || selected.videoFile ? (
-                <div className="flex-1 bg-black border border-[#00ff00]/30 min-h-0">
+                <div className="flex-1 bg-[#1e1e2e] border border-[#45475a] rounded min-h-0">
                   {isLocalVideo(selected) ? (
                     <video
                       src={getVideoSrc(selected)}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain rounded"
                       controls
                     />
                   ) : (
                     <iframe
                       src={selected.videoUrl}
-                      className="w-full h-full"
+                      className="w-full h-full rounded"
                       allowFullScreen
                     />
                   )}
                 </div>
               ) : (
-                <div className="flex-1 bg-black/50 border border-[#00ff00]/30 flex items-center justify-center text-[#00ff00]/30">
+                <div className="flex-1 bg-[#1e1e2e] border border-[#45475a] rounded flex items-center justify-center text-[#6c7086]">
                   NO VIDEO
                 </div>
               )}
             </div>
           ) : (
-            <div className="h-full flex items-center justify-center text-[#00ff00]/30">
+            <div className="h-full flex items-center justify-center text-[#6c7086]">
               SELECT A RUN
             </div>
           )}

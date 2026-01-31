@@ -15,15 +15,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${mono.className} crt min-h-screen`}>
-        <nav className="border-b border-[#00ff00]/30 px-4 py-2 flex gap-6 text-sm">
-          <Link href="/" className="text-[#ffb000]">UTRA_TERMINAL</Link>
-          <Link href="/" className="hover:text-[#00ff00]/80">[logs]</Link>
-          <Link href="/runs" className="hover:text-[#00ff00]/80">[runs]</Link>
-          <Link href="/achievements" className="hover:text-[#00ff00]/80">[achievements]</Link>
-          <Link href="/mint" className="hover:text-[#00ff00]/80">[mint]</Link>
+        <nav className="border-b border-[#45475a] px-6 py-3 flex gap-6 text-sm bg-[#282839]">
+          <Link href="/" className="text-[#cba6f7] font-semibold">UTRA</Link>
+          <Link href="/" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[logs]</Link>
+          <Link href="/runs" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[runs]</Link>
+          <Link href="/achievements" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[achievements]</Link>
+          <Link href="/mint" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[mint]</Link>
         </nav>
         <ClientLayout>
-          <main className="p-4">{children}</main>
+          <main className="p-6">{children}</main>
         </ClientLayout>
       </body>
     </html>

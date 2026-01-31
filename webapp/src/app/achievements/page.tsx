@@ -14,10 +14,10 @@ export default function AchievementsPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="mb-4 text-[#00ff00]/50 text-sm">{">"} ACHIEVEMENTS [{unlocked}/{achievements.length}]</div>
+      <div className="mb-6 text-[#6c7086] text-sm">{">"} ACHIEVEMENTS [{unlocked}/{achievements.length}]</div>
 
-      <div className="terminal-box p-4">
-        <pre className="text-sm">
+      <div className="terminal-box p-5">
+        <pre className="text-sm text-[#6c7086]">
 {`╔════════════════════════════════════════╗
 ║           BADGE COLLECTION             ║
 ╠════════════════════════════════════════╣`}
@@ -26,21 +26,26 @@ export default function AchievementsPage() {
         {achievements.map((a) => (
           <div
             key={a.id}
-            className={`py-2 px-2 border-b border-[#00ff00]/10 ${
-              a.unlocked ? "text-[#00ff00]" : "text-[#00ff00]/30"
+            className={`py-3 px-3 border-b border-[#45475a]/50 transition-colors ${
+              a.unlocked ? "text-[#cdd6f4]" : "text-[#6c7086]"
             }`}
           >
-            {a.unlocked ? "[X]" : "[ ]"} {a.name}
-            {a.unlocked && <span className="text-[#ffb000] ml-2">★</span>}
+            {a.unlocked ? (
+              <span className="text-[#a6e3a1]">[X]</span>
+            ) : (
+              <span className="text-[#6c7086]">[ ]</span>
+            )}{" "}
+            {a.name}
+            {a.unlocked && <span className="text-[#fab387] ml-2">*</span>}
           </div>
         ))}
 
-        <pre className="text-sm mt-2">
+        <pre className="text-sm text-[#6c7086] mt-2">
 {`╚════════════════════════════════════════╝`}
         </pre>
 
-        <div className="mt-4 text-xs text-[#00ff00]/40">
-          {"> "}Unlocked badges can be minted as NFTs on Solana
+        <div className="mt-5 text-xs text-[#6c7086]">
+          {">"} Unlocked badges can be minted as NFTs on Solana
         </div>
       </div>
     </div>
