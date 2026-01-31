@@ -20,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Link href="/" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[logs]</Link>
           <Link href="/runs" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[runs]</Link>
           <Link href="/achievements" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[achievements]</Link>
+          <Link href="/collection" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[collection]</Link>
           <Link href="/mint" className="text-[#a6adc8] hover:text-[#cdd6f4] transition-colors">[mint]</Link>
         </nav>
         <ClientLayout>
