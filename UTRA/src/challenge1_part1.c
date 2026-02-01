@@ -82,6 +82,7 @@ typedef enum
 RobotState robotstate = STATE_ROBOT_START;
 
 int rightcounter = 0;
+int second = 0;
 
 void loop()
 {
@@ -94,11 +95,20 @@ void loop()
     if (colour == PATH_BLUE || colour == PATH_GREEN || colour == PATH_BLACK)
     {
       moveForward();
-      delay(100);
+      delay(150);
       stopMotors();
+      if (second == 1)
+      {
+        delay(10);
+      }
+      else
+      {
+        delay(150);
+      }
     }
     else if (colour == PATH_WHITE)
     {
+      second = 1;
       robotstate = STATE_CHECK_RIGHT;
     }
     else if (colour == PATH_BLUE)
@@ -111,8 +121,9 @@ void loop()
   case STATE_CHECK_RIGHT:
     // rotate up to 90 degrees right
     moveRight();
-    delay(80);
+    delay(120);
     stopMotors();
+    delay(150);
 
     if (colour == PATH_GREEN)
     {
@@ -120,7 +131,7 @@ void loop()
     }
 
     rightcounter++;
-    if (rightcounter > 10)
+    if (rightcounter >= 25)
     {
       rightcounter = 0;
       robotstate = STATE_CHECK_LEFT;
@@ -129,8 +140,9 @@ void loop()
 
   case STATE_CHECK_LEFT:
     moveLeft();
-    delay(80);
+    delay(120);
     stopMotors();
+    delay(150);
 
     if (colour == PATH_GREEN)
     {

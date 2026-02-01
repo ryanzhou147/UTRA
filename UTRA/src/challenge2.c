@@ -112,7 +112,7 @@ void loop()
     if (colour == PATH_RED || colour == PATH_BLUE || colour == PATH_BLACK)
     {
       moveForward();
-      delay(100);
+      delay(150);
       stopMotors();
     }
     else if (colour == PATH_WHITE)
@@ -129,7 +129,7 @@ void loop()
   case STATE_CHECK_LEFT:
     // rotate up to 90 degrees left
     moveLeft();
-    delay(80);
+    delay(120);
     stopMotors();
 
     if (colour == PATH_RED)
@@ -138,7 +138,7 @@ void loop()
     }
 
     leftcounter++;
-    if (leftcounter > 10)
+    if (leftcounter >= 25)
     {
       leftcounter = 0;
       robotstate = STATE_CHECK_RIGHT;
@@ -147,7 +147,7 @@ void loop()
 
   case STATE_CHECK_RIGHT:
     moveRight();
-    delay(80);
+    delay(120);
     stopMotors();
 
     if (colour == PATH_RED)
@@ -157,39 +157,67 @@ void loop()
     break;
 
   case STATE_AVOID_OBSTACLE:
-    moveLeft();
-    delay(500);
-    stopMotors();
+    for (int i = 0; i < 8; i++)
+    {
+      moveLeft();
+      delay(150);
+      stopMotors();
+      delay(150);
+    }
 
-    moveForward();
-    delay(500);
-    stopMotors();
+    for (int i = 0; i < 15; i++)
+    {
+      moveForward();
+      delay(150);
+      stopMotors();
+      delay(50);
+    }
 
-    moveRight();
-    delay(500);
-    stopMotors();
+    for (int i = 0; i < 8; i++)
+    {
+      moveRight();
+      delay(150);
+      stopMotors();
+      delay(150);
+    }
 
-    moveForward();
-    delay(500);
-    stopMotors();
+    for (int i = 0; i < 20; i++)
+    {
+      moveForward();
+      delay(150);
+      stopMotors();
+      delay(50);
+    }
 
-    moveRight();
-    delay(500);
-    stopMotors();
+    for (int i = 0; i < 8; i++)
+    {
+      moveRight();
+      delay(150);
+      stopMotors();
+      delay(50);
+    }
 
-    moveForward();
-    delay(500);
-    stopMotors();
+    for (int i = 0; i < 15; i++)
+    {
+      moveForward();
+      delay(150);
+      stopMotors();
+      delay(50);
+    }
 
-    moveLeft();
-    delay(500);
-    stopMotors();
+    for (int i = 0; i < 8; i++)
+    {
+      moveLeft();
+      delay(150);
+      stopMotors();
+      delay(150);
+    }
 
     robotstate = STATE_FOLLOW_RED;
     break;
   }
 
-  delay(250);
+  delay(200);
 }
 
 // black threshold: all colours over 100
