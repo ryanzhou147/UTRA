@@ -172,20 +172,20 @@ void driveMotor(int leftPWM, int rightPWM) {
 
   // Left motor
   if (leftPWM >= 0) {
-    digitalWrite(IN1, lp > 0 ? HIGH : LOW);
-    digitalWrite(IN2, LOW);
-  } else {
     digitalWrite(IN1, LOW);
     digitalWrite(IN2, lp > 0 ? HIGH : LOW);
+  } else {
+    digitalWrite(IN1, lp > 0 ? HIGH : LOW);
+    digitalWrite(IN2, LOW);
   }
 
   // Right motor
   if (rightPWM >= 0) {
-    digitalWrite(IN3, rp > 0 ? HIGH : LOW);
-    digitalWrite(IN4, LOW);
-  } else {
     digitalWrite(IN3, LOW);
     digitalWrite(IN4, rp > 0 ? HIGH : LOW);
+  } else {
+    digitalWrite(IN3, rp > 0 ? HIGH : LOW);
+    digitalWrite(IN4, LOW);
   }
 }
 
