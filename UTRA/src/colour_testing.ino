@@ -26,8 +26,8 @@ void setup() {
   pinMode(IN4, OUTPUT);
   pinMode(ENA, OUTPUT);
   pinMode(ENB, OUTPUT);
-  digitalWrite(ENA, HIGH);  // Enable left motor
-  digitalWrite(ENB, HIGH);  // Enable right motor
+  analogWrite(ENA, 128);  // Half power left motor
+  analogWrite(ENB, 128);  // Half power right motor
 
   // colour sensor
   pinMode(S0, OUTPUT);
