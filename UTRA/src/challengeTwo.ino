@@ -25,11 +25,15 @@ const int S_OUT = 6;
 const int blackThreshold = 100;
 const int whiteThreshold = 40;
 int redPW = 0;
+int greenPW = 0;
+int bluePW = 0;
 
 typedef enum {
   PATH_WHITE = 0,
   PATH_RED = 1,
-  PATH_BLACK = 2
+  PATH_GREEN = 2,
+  PATH_BLUE = 3,
+  PATH_BLACK = 4
 } PathColour;
 
 typedef enum {
@@ -125,34 +129,65 @@ void followRed(PathColour color) {
 
 // black threshold: red pulse over 100
 // white threshold: red pulse under 40
-// white = 0, red = 1, black = 2
 PathColour getColour()
 {
   redPW = getRedPW();
+  greenPW = getGreenPW();
+  bluePW = getBluePW();
   
-  Serial.print("PW: ");
+  Serial.print("R:");
   Serial.print(redPW);
+  Serial.print(" G:");
+  Serial.print(greenPW);
+  Serial.print(" B:");
+  Serial.print(bluePW);
   Serial.print(" -> ");
 
   // timeout returns 0, treat as previous color or red
-  if (redPW == 0) {
+  if (redPW == 0 && greenPW == 0 && bluePW == 0) {
     return PATH_RED;
   }
 
-  if (redPW > blackThreshold) {
+  // All high = black
+  if (redPW > blackThreshold && greenPW > blackThreshold && bluePW > blackThreshold) {
     return PATH_BLACK;
   }
 
-  if (redPW < whiteThreshold) {
+  // All low = white
+  if (redPW < whiteThreshold && greenPW < whiteThreshold && bluePW < whiteThreshold) {
     return PATH_WHITE;
   }
 
-  return PATH_RED;
+  // Find dominant color (lowest PW value = strongest reflection)
+  int minPW = min(redPW, min(greenPW, bluePW));
+  if (minPW == redPW) {
+    return PATH_RED;
+  } else if (minPW == greenPW) {
+    return PATH_GREEN;
+  } else {
+    return PATH_BLUE;
+  }
 }
 
 int getRedPW() {
   digitalWrite(S2, LOW);
   digitalWrite(S3, LOW);
+  delay(10);
+  int PW = pulseIn(S_OUT, LOW, COLOR_PULSE_TIMEOUT_US);
+  return PW;
+}
+
+int getGreenPW() {
+  digitalWrite(S2, HIGH);
+  digitalWrite(S3, HIGH);
+  delay(10);
+  int PW = pulseIn(S_OUT, LOW, COLOR_PULSE_TIMEOUT_US);
+  return PW;
+}
+
+int getBluePW() {
+  digitalWrite(S2, LOW);
+  digitalWrite(S3, HIGH);
   delay(10);
   int PW = pulseIn(S_OUT, LOW, COLOR_PULSE_TIMEOUT_US);
   return PW;
@@ -246,6 +281,12 @@ void loop()
       break;
     case PATH_RED:
       Serial.println("RED");
+      break;
+    case PATH_GREEN:
+      Serial.println("GREEN");
+      break;
+    case PATH_BLUE:
+      Serial.println("BLUE");
       break;
     case PATH_BLACK:
       Serial.println("BLACK");
