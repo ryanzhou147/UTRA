@@ -13,6 +13,8 @@ const int LEFT1 = 9;
 const int LEFT2 = 10;
 const int RIGHT1 = 11;
 const int RIGHT2 = 12;
+const int ENA = 7;  // Enable pin for left motor
+const int ENB = 8;  // Enable pin for right motor
 
 // colour sensor
 const int S0 = 2;
@@ -201,6 +203,10 @@ void setup()
   pinMode(LEFT2, OUTPUT);
   pinMode(RIGHT1, OUTPUT);
   pinMode(RIGHT2, OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(ENB, OUTPUT);
+  digitalWrite(ENA, HIGH);  // Enable left motor
+  digitalWrite(ENB, HIGH);  // Enable right motor
   
   // colour sensor
   pinMode(S0, OUTPUT);
@@ -223,6 +229,19 @@ void loop()
 {
   PathColour color = getColour();
   int cm = getDistance();
+
+  Serial.print("Color: ");
+  switch (color) {
+    case PATH_WHITE:
+      Serial.println("WHITE");
+      break;
+    case PATH_RED:
+      Serial.println("RED");
+      break;
+    case PATH_BLACK:
+      Serial.println("BLACK");
+      break;
+  }
 
   switch (robotState) {
     case STATE_FOLLOW_RED:
