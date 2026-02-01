@@ -68,10 +68,65 @@ void setup()
   delay(2000);
 }
 
+#define MANUAL
+
+#ifndef MANUAL
+int counter = 0;
+
 void loop()
 {
-  
+  while (counter < 7)
+  {
+    moveFoward();
+    delay(250);
+    stopMotors();
+    delay(250);
+    counter++;
+  }
 }
+#endif
+
+#ifdef MANUAL
+const int rot = 1;
+const int move = 1;
+const int rot2 = 1;
+
+const int movement_delay = 150;
+
+int count1 = 0;
+int count2 = 0;
+int count3 = 0;
+
+void loop()
+{
+  while (count1 < rot)
+  {
+    moveLeft();
+    delay(movement_delay);
+    stopMotors();
+    delay(200);
+    count1++;
+  }
+
+  while (count2 < move)
+  {
+    moveForward();
+    delay(movement_delay);
+    stopMotors();
+    delay(200);
+    count2++;
+  }
+
+  while (count3 < move)
+  {
+    moveLeft();
+    delay(movement_delay);
+    stopMotors();
+    delay(200);
+    count3++;
+  }
+}
+#endif
 
 // black threshold: all colours over 100
 // white threshold: all colours under 40

@@ -1,8 +1,3 @@
-// servo
-//#include <Servo.h>
-//Servo servo;
-//const int SERVOPIN = A3;
-
 // ultrasonic sensor
 const int TRIGPIN = A4;
 const int ECHOPIN = A5;
@@ -27,7 +22,8 @@ int redPW = 0;
 int greenPW = 0;
 int bluePW = 0;
 
-typedef enum {
+typedef enum
+{
   PATH_WHITE = 0,
   PATH_RED = 1,
   PATH_GREEN = 2,
@@ -35,12 +31,20 @@ typedef enum {
   PATH_BLACK = 4
 } PathColour;
 
+typedef enum
+{
+  STATE_FOLLOW_RED = 0,
+  STATE_CHECK_LEFT = 1,
+  STATE_CHECK_RIGHT = 2,
+  STATE_AVOID_OBSTACLE = 3,
+  STATE_BLOCK_PICKUP = 4,
+  STATE_BLOCK_DROPOFF = 5,
+  STATE_FINISHED = 6
+} RobotState;
+RobotState robotstate = STATE_FOLLOW_RED;
+
 void setup()
 {
-  // ?
-  // servo.attach(SERVOPIN);
-  // servo.write(0);
-
   // ultrasonic sensor
   pinMode(TRIGPIN, OUTPUT);
   pinMode(ECHOPIN, INPUT_PULLUP);
@@ -68,9 +72,124 @@ void setup()
   delay(2000);
 }
 
+int leftcounter = 0;
+int obstaclecounter = 0;
+const int threshold = 25;
+
+bool isBlocked(int cm)
+{
+  if (cm < threshold)
+  {
+    obstaclecounter++;
+  }
+  else
+  {
+    obstaclecounter = 0;
+  }
+
+  return obstaclecounter > 5;
+}
+
 void loop()
 {
+  PathColour colour = getColour();
+  int cm = getDistance();
+
+  Serial.print(colour);
+  Serial.print(" ");
+  Serial.println(cm);
+
+  switch (robotstate)
+  {
+  case STATE_FOLLOW_RED:
   
+    if (isBlocked(cm))
+    {
+      robotstate = STATE_AVOID_OBSTACLE;
+    } 
+    else 
+    
+    if (colour == PATH_RED || colour == PATH_BLUE || colour == PATH_BLACK)
+    {
+      moveForward();
+      delay(100);
+      stopMotors();
+    }
+    else if (colour == PATH_WHITE)
+    {
+      robotstate = STATE_CHECK_LEFT;
+    }
+    else if (colour == PATH_BLUE)
+    {
+      // add flag for pickup dropoff
+      robotstate = STATE_BLOCK_PICKUP;
+    }
+    break;
+
+  case STATE_CHECK_LEFT:
+    // rotate up to 90 degrees left
+    moveLeft();
+    delay(80);
+    stopMotors();
+
+    if (colour == PATH_RED)
+    {
+      robotstate = STATE_FOLLOW_RED;
+    }
+
+    leftcounter++;
+    if (leftcounter > 10)
+    {
+      leftcounter = 0;
+      robotstate = STATE_CHECK_RIGHT;
+    }
+    break;
+
+  case STATE_CHECK_RIGHT:
+    moveRight();
+    delay(80);
+    stopMotors();
+
+    if (colour == PATH_RED)
+    {
+      robotstate = STATE_FOLLOW_RED;
+    }
+    break;
+
+  case STATE_AVOID_OBSTACLE:
+    moveLeft();
+    delay(500);
+    stopMotors();
+
+    moveForward();
+    delay(500);
+    stopMotors();
+
+    moveRight();
+    delay(500);
+    stopMotors();
+
+    moveForward();
+    delay(500);
+    stopMotors();
+
+    moveRight();
+    delay(500);
+    stopMotors();
+
+    moveForward();
+    delay(500);
+    stopMotors();
+
+    moveLeft();
+    delay(500);
+    stopMotors();
+
+    robotstate = STATE_FOLLOW_RED;
+    break;
+  }
+
+  delay(250);
 }
 
 // black threshold: all colours over 100

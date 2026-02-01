@@ -68,9 +68,76 @@ void setup()
   delay(2000);
 }
 
+typedef enum
+{
+  STATE_ROBOT_START = 0,
+  STATE_CHECK_RIGHT = 1,
+  STATE_CHECK_LEFT = 2,
+  STATE_FOLLOW_GREEN = 3,
+  STATE_FOLLOW_RAMP = 4,
+  STATE_BLOCK_PICKUP = 5,
+  STATE_BLOCK_DROPOFF = 6,
+  STATE_FINISHED = 7
+} RobotState;
+RobotState robotstate = STATE_ROBOT_START;
+
+int rightcounter = 0;
+
 void loop()
 {
-  
+  PathColour colour = getColour();
+  int cm = getDistance();
+
+  switch (robotstate)
+  {
+  case STATE_ROBOT_START:
+    if (colour == PATH_BLUE || colour == PATH_GREEN || colour == PATH_BLACK)
+    {
+      moveForward();
+      delay(100);
+      stopMotors();
+    }
+    else if (colour == PATH_WHITE)
+    {
+      robotstate = STATE_CHECK_RIGHT;
+    }
+    else if (colour == PATH_BLUE)
+    {
+      // add flag for pickup dropoff
+      robotstate = STATE_BLOCK_PICKUP;
+    }
+    break;
+
+  case STATE_CHECK_RIGHT:
+    // rotate up to 90 degrees right
+    moveRight();
+    delay(80);
+    stopMotors();
+
+    if (colour == PATH_GREEN)
+    {
+      robotstate = STATE_ROBOT_START;
+    }
+
+    rightcounter++;
+    if (rightcounter > 10)
+    {
+      rightcounter = 0;
+      robotstate = STATE_CHECK_LEFT;
+    }
+    break;
+
+  case STATE_CHECK_LEFT:
+    moveLeft();
+    delay(80);
+    stopMotors();
+
+    if (colour == PATH_GREEN)
+    {
+      robotstate = STATE_ROBOT_START;
+    }
+    break;
+  }
 }
 
 // black threshold: all colours over 100
