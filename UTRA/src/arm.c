@@ -1,19 +1,19 @@
 // servo
 #include <Servo.h>
 Servo servo;
-const int SERVOPIN = A3;
+const int SERVOPIN = 7;
 
 // ultrasonic sensor
-const int TRIGPIN = A4;
-const int ECHOPIN = A5;
+const int TRIGPIN = A1;
+const int ECHOPIN = A2;
 long duration;
 int distance;
 
 // dc motor
-const int LEFT1 = 9;
-const int LEFT2 = 10;
-const int RIGHT1 = 11;
-const int RIGHT2 = 12;
+const int LEFT1 = 8;
+const int LEFT2 = 9;
+const int RIGHT1 = 10;
+const int RIGHT2 = 11;
 
 // colour sensor
 const int S0 = 2;
@@ -67,9 +67,107 @@ void setup()
   Serial.begin(9600);
 }
 
+typedef enum {
+  ARM_INACTIVE = 0,
+  ARM_ACTIVE1 = 1,
+  ARM_ACTIVE2 = 2,
+  ARM_FINISHED = 3
+} ArmState;
+ArmState armstate = ARM_INACTIVE;
+
+int counter = 0;
+
 void loop()
 {
-  
+  while (1)
+  {
+    switch (armstate)
+    {
+    case ARM_INACTIVE:
+      if (PATH_BLUE == getColour())
+      {
+        pickup();
+        armstate = ARM_ACTIVE1;
+      }
+      break;
+    case ARM_ACTIVE1:
+      counter++;
+      if (counter > 1000)
+      {
+        counter = 0;
+        armstate = ARM_ACTIVE2;
+      }
+      break;
+    case ARM_ACTIVE2:
+      if (PATH_BLUE == getColour())
+      {
+        dropoff();
+        armstate = ARM_FINISHED
+      }
+      break;
+    case ARM_FINISHED:
+      break;
+    }
+    delay(7);
+  }
+}
+
+// #define TEST1
+
+// experimentally change these
+const int turn_pickup_delay = 1;
+const int box_pickup_delay = 1;
+void pickup()
+{
+#ifdef TEST1
+  const int repos_pickup_delay = 1;
+  moveBackward();
+  delay(repos_pickup_delay);
+#endif
+  moveRight();
+  delay(turn_pickup_delay);
+  moveForward();
+  delay(box_pickup_delay);
+  stopMotors();
+  servo.write(30);
+  delay(1); // time for arm to stabilize, experimentally figure this out
+  moveBackward();
+  delay(box_pickup_delay);
+  moveLeft();
+  delay(turn_pickup_delay);
+#ifdef TEST1
+  moveForward();
+  delay(repos_pickup_delay);
+#endif
+  stopMotors();
+}
+
+// experimentally change these
+const int turn_dropoff_delay = 1;
+const int box_dropoff_delay = 1;
+void dropoff()
+{
+#ifdef TEST1
+  const int repos_dropoff_delay = 1;
+  moveBackward();
+  delay(repos_dropoff_delay);
+#endif
+  moveLeft();
+  delay(turn_dropoff_delay);
+  moveForward();
+  delay(box_dropoff_delay);
+  stopMotors();
+  servo.write(0);
+  delay(1); // time for arm to stabilize, experimnetally figure this out
+  moveBackward();
+  delay(box_dropoff_delay);
+  moveRight();
+  delay(turn_dropff_delay);
+#ifdef TEST1
+  moveForward();
+  delay(repos_dropoff_delay);
+#endif
+  stopMotors();
 }
 
 // black threshold: all colours over 100

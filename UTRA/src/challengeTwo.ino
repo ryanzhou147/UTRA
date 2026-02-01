@@ -1,18 +1,18 @@
 // servo
 #include <Servo.h>
 Servo servo;
-const int SERVOPIN = 7;
+const int SERVOPIN = A3;
 
 // ultrasonic sensor
-const int TRIGPIN = A1;
-const int ECHOPIN = A2;
+const int TRIGPIN = A4;
+const int ECHOPIN = A5;
 long duration;
 
 // dc motor
-const int LEFT1 = 8;
-const int LEFT2 = 9;
-const int RIGHT1 = 10;
-const int RIGHT2 = 11;
+const int LEFT1 = 9;
+const int LEFT2 = 10;
+const int RIGHT1 = 11;
+const int RIGHT2 = 12;
 
 // colour sensor
 const int S0 = 2;
